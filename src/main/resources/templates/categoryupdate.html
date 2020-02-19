@@ -1,0 +1,48 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">-->
+<!--<head>-->
+<!--<meta charset="UTF-8">-->
+<!--<title>Title</title>-->
+<!--<style>-->
+<!--#main{-->
+<!--width: 850px;-->
+<!--margin: auto;-->
+<!--}-->
+<!--table{-->
+<!--width: 900px;-->
+<!--text-align: center;-->
+<!--}-->
+<!--</style>-->
+<!--</head>-->
+<!--<div align="center">-->
+<!--<p style="font-size: 100px">管理员更新分类</p>-->
+<!--</div>-->
+<!--<body>-->
+<!--<div categoryid="main">-->
+<!--<p style="font-size: 50px"><a th:href="@{/category/main}">返回首页</a></p>-->
+<!--<form th:action="@{/category/update}" method="post" style="font-size: 50px">-->
+<!--<input type="hidden" name="categoryid" th:value="${category.categoryid}">-->
+<!--<table>-->
+<!--<thead><h3>修改分类</h3></thead>-->
+<!--<tbody>-->
+<!--<tr>-->
+<!--<td>分类编号</td>-->
+<!--<td th:text="${categoryid}"></td>-->
+<!--</tr>-->
+<!--<tr>-->
+<!--<td>分类名</td>-->
+<!--<td><input type="text" name="sortname" th:value="${category.sortname}"></td>-->
+<!--</tr>-->
+<!--<tr>-->
+<!--<td>-->
+<!--<input type="submit" value="修改">-->
+<!--<button type="button" onclick="history.go(-1)">返回</button>-->
+<!--</td>-->
+<!--</tr>-->
+<!--</tbody>-->
+<!--</table>-->
+
+<!--</form>-->
+<!--</div>-->
+<!--</body>-->
+<!--</html>-->

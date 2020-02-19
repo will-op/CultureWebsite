@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xm.sbdemo1.dao.CourseOfUserDao">
+
+    <resultMap id="CourseOfUserSimpleMap" type="com.xm.sbdemo1.pojo.CourseOfUser">
+        <result property="userid" column="userid"/>
+        <result property="courseid" column="courseid"/>
+        <result property="buydate" column="buydate"/>
+        <result property="courseperiodname" column="courseperiodname"/>
+        <collection property="courses" ofType="com.xm.sbdemo1.pojo.Course">
+            <result property="title" column="title"/>
+        </collection>
+    </resultMap>
+
+    <insert id="buyCourse">
+        insert into courseofuser
+        <trim prefixOverrides="," prefix="(" suffix=")">
+            <if test="userid!=null">
+                ,userid
+            </if>
+            <if test="courseperiodname!=null and courseperiodname!= ''">
+                ,courseperiodname
+            </if>
+            <if test="courseid!=null">
+                ,courseid
+            </if>
+            <if test="buydate!=null">
+                ,buydate
+            </if>
+        </trim>
+        <trim prefixOverrides="," prefix="values(" suffix=")">
+            <if test="userid!=null">
+                ,#{userid}
+            </if>
+            <if test="courseperiodname!=null and courseperiodname!= ''">
+                ,#{courseperiodname}
+            </if>
+            <if test="courseid!=null">
+                ,#{courseid}
+            </if>
+            <if test="buydate!=null">
+                ,#{buydate}
+            </if>
+        </trim>
+    </insert>
+
+    <select id="queryPurchasedByUserid" resultMap="CourseOfUserSimpleMap">
+        select t1.userid,t1.courseid,t1.buydate,t1.courseperiodname,t2.title
+        from courseofuser t1,course t2
+        where t1.userid = #{userid}
+        and t1.courseid = t2.courseid
+    </select>
+
+</mapper>

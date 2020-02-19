@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xm.sbdemo1.dao.UserDao">
+
+    <sql id="Base_User_Column">
+        userid, wxid, ifadmin, wxnickname, sex, userscore
+    </sql>
+    <sql id="Base_Collect_Column">
+        usercollectid, userid, courseid
+    </sql>
+    <sql id="Base_Signin_Column">
+        signid, userid, signdate, continuedays, signaward, awardtype, finalaward
+    </sql>
+    <resultMap id="userCollectSimpleMap" type="com.xm.sbdemo1.pojo.UserCollect">
+        <id property="usercollectid" column="usercollectid"/>
+        <result property="userid" column="userid"/>
+        <result property="courseid" column="courseid"/>
+        <collection property="courses" ofType="com.xm.sbdemo1.pojo.Course">
+            <result property="title" column="title"/>
+        </collection>
+    </resultMap>
+
+    <insert id="regist">
+        insert into user
+        <trim prefix="(" suffix=")" prefixOverrides=",">
+            <if test="userid!=null and userid!=''">
+                ,userid
+            </if>
+            <if test="wxid!=null and wxid!=''">
+                ,wxid
+            </if>
+            <if test="wxnickname!=null and wxnickname!=''">
+                ,wxnickname
+            </if>
+            <if test="sex!=null and sex!=''">
+                ,sex
+            </if>
+        </trim>
+        <trim prefix="values(" suffix=")" prefixOverrides=",">
+            <if test="userid!=null and userid!=''">
+                ,#{userid}
+            </if>
+            <if test="wxid!=null and wxid!=''">
+                ,#{wxid}
+            </if>
+            <if test="wxnickname!=null and wxnickname!=''">
+                ,#{wxnickname}
+            </if>
+            <if test="sex!=null and sex!=''">
+                ,#{sex}
+            </if>
+        </trim>
+    </insert>
+
+    <insert id="coursecollect">
+        insert into usercollect
+        <trim prefix="(" suffix=")" prefixOverrides=",">
+            <if test="courseid!=null">
+                ,courseid
+            </if>
+            <if test="userid!=null">
+                ,userid
+            </if>
+        </trim>
+        <trim prefix="values(" suffix=")" prefixOverrides=",">
+            <if test="courseid!=null">
+                ,#{courseid}
+            </if>
+            <if test="userid!=null">
+                ,#{userid}
+            </if>
+        </trim>
+    </insert>
+
+    <insert id="signin">
+        insert into usersignin
+        <trim prefix="(" suffix=")" prefixOverrides=",">
+            <if test="userid!=null">
+                ,userid
+            </if>
+            <if test="signdate!=null">
+                ,signdate
+            </if>
+            <if test="continuedays!=null">
+                ,continuedays
+            </if>
+            <if test="award!=null">
+                ,signaward
+            </if>
+            <if test="awardtype!=null">
+                ,awardtype
+            </if>
+            <if test="finalaward!=null">
+                ,finalaward
+            </if>
+        </trim>
+        <trim prefix="values(" suffix=")" prefixOverrides=",">
+            <if test="userid!=null">
+                ,#{userid}
+            </if>
+            <if test="signdate!=null">
+                ,#{signdate}
+            </if>
+            <if test="continuedays!=null">
+                ,#{continuedays}
+            </if>
+            <if test="award!=null">
+                ,#{award}
+            </if>
+            <if test="awardtype!=null">
+                ,#{awardtype}
+            </if>
+            <if test="finalaward!=null">
+                ,#{finalaward}
+            </if>
+        </trim>
+    </insert>
+
+    <update id="addscore">
+        update user
+        <set>
+            <if test="userid!=null and score!=null">
+                userscore = #{score},
+            </if>
+        </set>
+        <where>
+            userid = #{userid}
+        </where>
+    </update>
+
+    <select id="existswxid" resultType="com.xm.sbdemo1.pojo.User">
+        select
+        <include refid="Base_User_Column"/>
+        from user where wxid = #{wxid}
+    </select>
+
+    <select id="queryCollects" resultMap="userCollectSimpleMap">
+        SELECT t1.userid,t1.courseid,t2.title
+        FROM usercollect t1,course t2
+        WHERE t1.userid = #{userid}
+        AND t1.courseid = t2.courseid
+    </select>
+
+    <select id="queryByUserid" resultType="com.xm.sbdemo1.pojo.User">
+        select
+        <include refid="Base_User_Column"/>
+        from user where userid = #{userid}
+    </select>
+
+    <select id="querySignDate" resultType="com.xm.sbdemo1.pojo.UserSignIn">
+        select
+        <include refid="Base_Signin_Column"/>
+        from usersignin
+        where userid=#{userid} and awardtype=#{awardtype}
+        order by signdate desc limit 0,1
+    </select>
+
+</mapper>

@@ -1,0 +1,50 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">-->
+<!--<head>-->
+<!--<meta charset="UTF-8">-->
+<!--<title>Title</title>-->
+<!--<style>-->
+<!--#main{-->
+<!--width: 850px;-->
+<!--margin: auto;-->
+<!--}-->
+<!--table{-->
+<!--width: 900px;-->
+<!--text-align: center;-->
+<!--}-->
+<!--</style>-->
+<!--</head>-->
+<!--<div align="center">-->
+<!--<p style="font-size: 100px">管理员修改分类</p>-->
+<!--</div>-->
+<!--<body>-->
+<!--<div categoryid="main">-->
+<!--<p style="font-size: 50px"><a th:href="@{/category/main}">返回首页</a></p>-->
+<!--<form th:action="@{/category/update}" method="post" style="font-size: 50px">-->
+<!--&lt;!&ndash;<input type="hidden" name="categoryid" th:value="${category.categoryid}">&ndash;&gt;-->
+<!--<table>-->
+<!--<thead>-->
+<!--&lt;!&ndash;<th>编号</th>&ndash;&gt;-->
+<!--<th></th>-->
+<!--<th>分类名</th>-->
+<!--<th>操作</th>-->
+<!--</thead>-->
+<!--<tbody>-->
+<!--<tr th:each="category:${category}">-->
+<!--<td><input type="hidden" name="categoryid" th:value="${category.categoryid}"></td>-->
+<!--<td><input style="height: 50px;width: 300px;font-size: 40px" type="text" name="sortname" th:value="${category.sortname}"></td>-->
+<!--<td><a th:href="@{/category/delete/{categoryid}(categoryid=${category.categoryid})}">删除</a></td>-->
+<!--</tr>-->
+<!--&lt;!&ndash;<tr>&ndash;&gt;-->
+<!--&lt;!&ndash;<td>&ndash;&gt;-->
+<!--&lt;!&ndash;</td>&ndash;&gt;-->
+<!--&lt;!&ndash;</tr>&ndash;&gt;-->
+<!--</tbody>-->
+<!--</table>-->
+
+<!--<input style="height: 60px;width: 220px;font-size: 40px" type="submit" value="确认修改">-->
+<!--&lt;!&ndash;<button style="height: 60px;width: 200px;font-size: 40px" type="button" th:onclick="@{/category/main}">返回</button>&ndash;&gt;-->
+<!--</form>-->
+<!--</div>-->
+<!--</body>-->
+<!--</html>-->

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xm.sbdemo1.dao.CategoryDao">
+
+    <sql id="Base_Category_Column">
+        categoryid, sortname
+    </sql>
+
+    <insert id="add">
+        insert into category
+        <trim prefix="(" suffix=")" prefixOverrides=",">
+            <if test="sortname!=null and sortname != ''">
+                ,sortname
+            </if>
+        </trim>
+        <trim prefix="values(" suffix=")" prefixOverrides=",">
+            <if test="sortname!=null and sortname != ''">
+                ,#{sortname}
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update">
+        update category
+        <set>
+            <if test="sortname != null and sortname !=''">
+                sortname = #{sortname},
+            </if>
+        </set>
+        <where>
+            categoryid = #{categoryid}
+        </where>
+    </update>
+
+    <delete id="delete">
+        delete from category where categoryid=#{categoryid}
+    </delete>
+
+    <select id="queryAll" resultType="com.xm.sbdemo1.pojo.Category">
+        select
+        <include refid="Base_Category_Column"/>
+        from category
+    </select>
+
+</mapper>

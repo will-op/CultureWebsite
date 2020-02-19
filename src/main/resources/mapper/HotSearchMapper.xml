@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xm.sbdemo1.dao.HotSearchDao">
+
+    <sql id="Base_Hotsearch_Column">
+        hotsearchid, hotwords, searchtimes, note
+    </sql>
+    <insert id="addHotWords">
+        insert into hotsearch (hotwords, searchtimes, note) values (#{title},#{searchtimes},#{note})
+    </insert>
+
+    <update id="addOneToWords">
+        update hotsearch set searchtimes = searchtimes+1 where hotwords=#{title}
+    </update>
+
+    <select id="queryHotWord" resultType="com.xm.sbdemo1.pojo.HotSearch">
+        select
+        <include refid="Base_Hotsearch_Column"/>
+        from hotsearch where hotwords=#{title}
+    </select>
+    <select id="searchFromTeacher" resultType="java.lang.Integer">
+        select * from teacher where teachername = #{title}
+    </select>
+    <select id="searchFromCourse" resultType="java.lang.Integer">
+        select * from course where
+        title like concat('%',#{title},'%')
+        or abstracts like concat('%',#{title},'%')
+    </select>
+    <select id="queryPopTeacher" resultType="com.xm.sbdemo1.pojo.HotSearch">
+        select
+        <include refid="Base_Hotsearch_Column"/>
+        from hotsearch where note=1 order by searchtimes desc limit 0,8
+    </select>
+    <select id="queryPopWorks" resultType="com.xm.sbdemo1.pojo.HotSearch">
+        select
+        <include refid="Base_Hotsearch_Column"/>
+        from hotsearch where note=2 order by searchtimes desc limit 0,10
+    </select>
+</mapper>

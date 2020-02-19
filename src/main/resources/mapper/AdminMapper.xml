@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xm.sbdemo1.dao.AdminDao">
+
+    <sql id="Base_Admin_Column">
+        adminid, pwd, salt
+    </sql>
+
+    <insert id="adminRegister">
+        insert into admin (adminid, pwd, salt) values (#{adminid},#{pwd},#{salt})
+    </insert>
+
+    <select id="queryAllFromAdmin" resultType="com.xm.sbdemo1.pojo.Admin">
+        select
+        <include refid="Base_Admin_Column"/>
+        from admin where adminid = #{adminid}
+    </select>
+
+</mapper>

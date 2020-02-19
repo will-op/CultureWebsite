@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form th:action="@{/login/adminlogin}" method="post">
+    <h1>LOGIN</h1>
+    账号：<input type="text" name="adminid"><br>
+    密码：<input type="text" name="pwd"><br>
+    <!--<a th:href="@{/admin/login}">管理员登录</a>-->
+    <input type="submit" value="login">
+</form>
+</body>
+
+
+</html>

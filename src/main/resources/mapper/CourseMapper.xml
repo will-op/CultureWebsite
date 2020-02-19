@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xm.sbdemo1.dao.CourseDao">
+
+    <resultMap id="courseSimpMap" type="com.xm.sbdemo1.pojo.Course">
+        <id property="courseid" column="courseid"/>
+        <result property="title" column="title"/>
+        <result property="categoryid" column="categoryid"/>
+        <result property="courseintro" column="courseintro"/>
+        <!--<result property="teacherid" column="teacherid"/>-->
+        <collection property="comments" ofType="com.xm.sbdemo1.pojo.Comment">
+            <result property="userid" column="userid"/>
+            <result property="coursecomments" column="coursecomments"/>
+            <result property="answertime" column="answertime"/>
+        </collection>
+        <collection property="teacher" ofType="com.xm.sbdemo1.pojo.Teacher">
+            <result property="teachername" column="teachername"/>
+            <result property="teacherintroduce" column="teacherintroduce"/>
+        </collection>
+    </resultMap>
+
+    <resultMap id="courseSearchSimpMap" type="com.xm.sbdemo1.pojo.Course">
+        <id property="courseid" column="courseid"/>
+        <result property="title" column="title"/>
+        <result property="categoryid" column="categoryid"/>
+        <result property="courseintro" column="courseintro"/>
+        <result property="keyword" column="keyword"/>
+        <result property="totalnum" column="totalnum"/>
+        <result property="abstracts" column="abstracts"/>
+        <result property="joined" column="joined"/>
+        <result property="price" column="price"/>
+        <result property="firstdate" column="firstdate"/>
+        <collection property="teacher" ofType="com.xm.sbdemo1.pojo.Teacher">
+            <result property="teachername" column="teachername"/>
+            <result property="teacherintroduce" column="teacherintroduce"/>
+        </collection>
+    </resultMap>
+
+    <sql id="Base_Course_Column">
+        courseid, categoryid, teacherid, title, keyword, totalnum, joined, price, courseintro, abstracts,firstdate
+    </sql>
+
+    <insert id="addCourse">
+        insert into course
+        <trim prefix="(" suffix=")" prefixOverrides=",">
+            <if test="categoryid!=null">
+                ,categoryid
+            </if>
+            <if test="teacherid!=null">
+                ,teacherid
+            </if>
+            <if test="title!=null and title != ''">
+                ,title
+            </if>
+            <if test="keyword!=null and keyword != ''">
+                ,keyword
+            </if>
+            <if test="totalnum!=null">
+                ,totalnum
+            </if>
+            <if test="joined!=null">
+                ,joined
+            </if>
+            <if test="price!=null">
+                ,price
+            </if>
+            <if test="courseintro!=null and courseintro != ''">
+                ,courseintro
+            </if>
+            <if test="abstracts!=null and abstracts!=''">
+                ,abstracts
+            </if>
+        </trim>
+        <trim prefix="values(" suffix=")" prefixOverrides=",">
+            <if test="categoryid!=null">
+                ,#{categoryid}
+            </if>
+            <if test="teacherid!=null">
+                ,#{teacherid}
+            </if>
+            <if test="title!=null and title != ''">
+                ,#{title}
+            </if>
+            <if test="keyword!=null and keyword != ''">
+                ,#{keyword}
+            </if>
+            <if test="totalnum!=null">
+                ,#{totalnum}
+            </if>
+            <if test="joined!=null">
+                ,#{joined}
+            </if>
+            <if test="price!=null">
+                ,#{price}
+            </if>
+            <if test="courseintro!=null and courseintro != ''">
+                ,#{courseintro}
+            </if>
+            <if test="abstracts!=null and abstracts!=''">
+                ,#{abstracts}
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updatecourse">
+        update course
+        <set>
+            <if test="categoryid!=null">
+                categoryid = #{categoryid},
+            </if>
+            <if test="teacherid!=null">
+                teacherid = #{teacherid},
+            </if>
+            <if test="title!=null and title!=''">
+                title = #{title},
+            </if>
+            <if test="keyword!=null and keyword!=''">
+                keyword = #{keyword},
+            </if>
+            <if test="totalnum!=null">
+                totalnum = #{totalnum},
+            </if>
+            <if test="joined!=null">
+                joined = #{joined},
+            </if>
+            <if test="price!=null">
+                price = #{price},
+            </if>
+            <if test="courseintro!=null and courseintro!=''">
+                courseintro = #{courseintro},
+            </if>
+            <if test="abstracts!=null and abstracts!=''">
+                abstracts = #{abstracts},
+            </if>
+        </set>
+        <where>
+            courseid = #{courseid}
+        </where>
+    </update>
+
+    <update id="joinOne">
+        update course
+        set joined = joined + 1
+        where courseid=#{courseid}
+    </update>
+
+    <delete id="deleteByCourseid">
+        delete from course where courseid = #{courseid}
+    </delete>
+
+    <select id="queryByCategoryid" resultType="com.xm.sbdemo1.pojo.Course">
+        select
+        <include refid="Base_Course_Column"/>
+        from course
+        where categoryid = #{categoryid}
+    </select>
+
+    <select id="collectKeyword" resultType="com.xm.sbdemo1.pojo.Course">
+        select distinct keyword from course where categoryid = #{categoryid}
+    </select>
+
+    <select id="queryUseKeyword" resultType="com.xm.sbdemo1.pojo.Course">
+        select
+        <include refid="Base_Course_Column"/>
+        from course
+        where keyword=#{keyword}
+    </select>
+
+    <select id="queryByTitle" resultType="com.xm.sbdemo1.pojo.Course">
+        select
+        <include refid="Base_Course_Column"/>
+        from course where title=#{title}
+    </select>
+
+    <select id="queryByTitleSearch" resultType="com.xm.sbdemo1.pojo.Course">
+        select
+        <include refid="Base_Course_Column"/>
+        from course
+        where title like concat('%',#{title},'%')
+        or abstracts like concat('%',#{title},'%')
+
+    </select>
+
+    <select id="queryBytitletoclass" resultType="com.xm.sbdemo1.pojo.Course">
+        select
+        <include refid="Base_Course_Column"/>
+        from course where title=#{coursename}
+    </select>
+
+    <select id="queryCourseByCourseid" resultType="com.xm.sbdemo1.pojo.Course">
+        select
+        <include refid="Base_Course_Column"/>
+        from course where courseid=#{courseid}
+    </select>
+
+    <select id="queryAllFromCourse" resultType="com.xm.sbdemo1.pojo.Course">
+        select
+        <include refid="Base_Course_Column"/>
+        from course where courseid=#{courseid}
+    </select>
+
+    <select id="searchFromCourse" resultType="com.xm.sbdemo1.pojo.Course">
+        select * from course where
+        title like concat('%',#{title},'%')
+        or abstracts like concat('%',#{title},'%')
+    </select>
+
+    <!--动态sql真的是个好东西啊！！！-->
+    <select id="searByObject" resultMap="courseSearchSimpMap">
+        SELECT
+        *
+        FROM
+        course
+        INNER JOIN teacher ON course.teacherid = teacher.teacherid
+        <where>
+            <if test="categoryid!=null and categoryid!=''">
+                AND course.categoryid = #{categoryid}
+            </if>
+            <if test="work!=null and work!=''">
+                AND (
+                course.title LIKE concat( '%',#{work},'%' )
+                OR course.keyword LIKE concat('%',#{work},'%')
+                OR course.abstracts LIKE concat( '%',#{work},'%' )
+                OR course.courseintro LIKE concat( '%',#{work},'%' )
+                OR teacher.teachername LIKE concat( '%',#{work},'%' )
+                OR teacher.teacherintroduce LIKE concat( '%',#{work},'%' )
+                )
+            </if>
+            <if test="keyword!=null and keyword!=''">
+                AND course.keyword = #{keyword}
+            </if>
+        </where>
+        <if test="sortby!=null and sortby == 0L">
+            ORDER BY course.firstdate ASC
+        </if>
+        <if test="sortby!=null and sortby == 1L">
+            ORDER BY course.joined DESC
+        </if>
+
+    </select>
+
+</mapper>

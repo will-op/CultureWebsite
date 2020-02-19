@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xm.sbdemo1.dao.CommentDao">
+
+    <resultMap id="CommentSimpMap" type="com.xm.sbdemo1.pojo.Comment">
+        <id property="commentid" column="commentid"/>
+        <result property="courseid" column="courseid"/>
+        <result property="coursecomments" column="coursecomments"/>
+        <result property="answertime" column="answertime"/>
+        <collection property="user" ofType="com.xm.sbdemo1.pojo.User">
+            <result property="wxnickname" column="wxnickname"/>
+        </collection>
+
+    </resultMap>
+
+    <sql id="Base_Comment_Column">
+        commentid, userid, courseid, coursecomments, answertime
+    </sql>
+
+    <select id="commentShow" resultType="com.xm.sbdemo1.pojo.Comment">
+        select t1.*,t2.wxnickname from comment t1,user t2 where courseid = #{courseid} and t1.userid = t2.userid
+    </select>
+
+    <insert id="addComment">
+        insert into comment
+        <trim prefix="(" suffix=")" prefixOverrides=",">
+            <if test="courseid!=null">
+                ,courseid
+            </if>
+            <if test="userid!=null">
+                ,userid
+            </if>
+            <if test="coursecomments!='' and coursecomments !=null">
+                ,coursecomments
+            </if>
+            <if test="answertime!=null">
+                ,answertime
+            </if>
+        </trim>
+        <trim prefix="values(" suffix=")" prefixOverrides=",">
+            <if test="courseid!=null">
+                ,#{courseid}
+            </if>
+            <if test="userid!=null">
+                ,#{userid}
+            </if>
+            <if test="coursecomments!='' and coursecomments !=null">
+                ,#{coursecomments}
+            </if>
+            <if test="answertime!=null">
+                ,#{answertime}
+            </if>
+        </trim>
+    </insert>
+
+</mapper>

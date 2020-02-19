@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xm.sbdemo1.dao.CourseperiodDao">
+
+    <sql id="Base_Period_Column">
+        courseperiodid, courseperiodname, courseid, begintime
+    </sql>
+    <resultMap id="periodMap" type="com.xm.sbdemo1.pojo.Courseperiod">
+        <id property="courseperiodid" column="courseperiodid"/>
+        <result property="courseperiodname" column="courseperiodname"/>
+        <result property="begintime" column="begintime"/>
+        <result property="courseid" column="courseid"/>
+        <collection property="course" ofType="com.xm.sbdemo1.pojo.Course">
+            <result property="title" column="title"/>
+        </collection>
+        <collection property="teacher" ofType="com.xm.sbdemo1.pojo.Teacher">
+            <result property="teachername" column="teachername"/>
+        </collection>
+    </resultMap>
+
+    <select id="queryByCid" resultType="com.xm.sbdemo1.pojo.Courseperiod">
+        select
+        <include refid="Base_Period_Column"/>
+        from courseperiod where courseid=#{courseid}
+    </select>
+
+    <select id="queryAll" resultType="com.xm.sbdemo1.pojo.Courseperiod">
+        select
+        <include refid="Base_Period_Column"/>
+        from courseperiod
+    </select>
+
+    <select id="queryByTopTime" resultMap="periodMap">
+        SELECT t1.courseperiodid,t1.courseperiodname,t1.begintime,t1.courseid,
+        t2.title,t3.teachername
+        FROM courseperiod t1,course t2,teacher t3
+        WHERE t1.begintime <![CDATA[ <= ]]> DATE_ADD(NOW(),INTERVAL 49 HOUR)
+        AND t1.courseid = t2.courseid
+        AND t2.teacherid = t3.teacherid
+        ORDER BY begintime
+        LIMIT 0,3
+    </select>
+
+</mapper>
